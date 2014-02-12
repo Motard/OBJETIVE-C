@@ -7,9 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C52E1B618AB9001008C96C5 /* Curso.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C52E1B518AB9001008C96C5 /* Curso.m */; };
+		2C52E1B918AB906E008C96C5 /* Nota.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C52E1B818AB906E008C96C5 /* Nota.m */; };
 		2CEF922C18AB85B100D9A1E7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CEF922B18AB85B100D9A1E7 /* Foundation.framework */; };
 		2CEF922F18AB85B100D9A1E7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CEF922E18AB85B100D9A1E7 /* main.m */; };
 		2CEF923318AB85B100D9A1E7 /* Escola.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2CEF923218AB85B100D9A1E7 /* Escola.1 */; };
+		2CEF923B18AB8B0C00D9A1E7 /* Disciplina.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CEF923A18AB8B0C00D9A1E7 /* Disciplina.m */; };
+		2CEF923E18AB8D2100D9A1E7 /* Utilizador.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CEF923D18AB8D2100D9A1E7 /* Utilizador.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,11 +30,19 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2C52E1B418AB9001008C96C5 /* Curso.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Curso.h; sourceTree = "<group>"; };
+		2C52E1B518AB9001008C96C5 /* Curso.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Curso.m; sourceTree = "<group>"; };
+		2C52E1B718AB906E008C96C5 /* Nota.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Nota.h; sourceTree = "<group>"; };
+		2C52E1B818AB906E008C96C5 /* Nota.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Nota.m; sourceTree = "<group>"; };
 		2CEF922818AB85B100D9A1E7 /* Escola */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Escola; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CEF922B18AB85B100D9A1E7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		2CEF922E18AB85B100D9A1E7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2CEF923118AB85B100D9A1E7 /* Escola-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Escola-Prefix.pch"; sourceTree = "<group>"; };
 		2CEF923218AB85B100D9A1E7 /* Escola.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Escola.1; sourceTree = "<group>"; };
+		2CEF923918AB8B0C00D9A1E7 /* Disciplina.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Disciplina.h; sourceTree = "<group>"; };
+		2CEF923A18AB8B0C00D9A1E7 /* Disciplina.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Disciplina.m; sourceTree = "<group>"; };
+		2CEF923C18AB8D2100D9A1E7 /* Utilizador.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilizador.h; sourceTree = "<group>"; };
+		2CEF923D18AB8D2100D9A1E7 /* Utilizador.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utilizador.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +86,14 @@
 			isa = PBXGroup;
 			children = (
 				2CEF922E18AB85B100D9A1E7 /* main.m */,
+				2CEF923918AB8B0C00D9A1E7 /* Disciplina.h */,
+				2CEF923C18AB8D2100D9A1E7 /* Utilizador.h */,
+				2CEF923D18AB8D2100D9A1E7 /* Utilizador.m */,
+				2CEF923A18AB8B0C00D9A1E7 /* Disciplina.m */,
+				2C52E1B418AB9001008C96C5 /* Curso.h */,
+				2C52E1B718AB906E008C96C5 /* Nota.h */,
+				2C52E1B818AB906E008C96C5 /* Nota.m */,
+				2C52E1B518AB9001008C96C5 /* Curso.m */,
 				2CEF923218AB85B100D9A1E7 /* Escola.1 */,
 				2CEF923018AB85B100D9A1E7 /* Supporting Files */,
 			);
@@ -139,7 +159,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C52E1B918AB906E008C96C5 /* Nota.m in Sources */,
 				2CEF922F18AB85B100D9A1E7 /* main.m in Sources */,
+				2CEF923B18AB8B0C00D9A1E7 /* Disciplina.m in Sources */,
+				2C52E1B618AB9001008C96C5 /* Curso.m in Sources */,
+				2CEF923E18AB8D2100D9A1E7 /* Utilizador.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -251,6 +275,7 @@
 				2CEF923818AB85B100D9A1E7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
