@@ -9,14 +9,18 @@
 #import <Foundation/Foundation.h>
 
 @interface Disciplinas : NSObject
-{
-    int nota;
-    NSString * nomeDisciplina;
-}
+//{
+//    int nota;
+//    NSString * nomeDisciplina;
+//}
 
--(int)getNota;
--(void) setNota:(int)novaNota;
--(NSString *) getNomeDisciplina;
--(void) setNomeDisciplina:(NSString *) novaDisciplina;
+@property (nonatomic) int nota;
+@property (nonatomic) NSString * nomeDisciplina;
+
+//-(int)getNota;
+//-(void) setNota:(int)novaNota;
+//-(NSString *) getNomeDisciplina;
+//-(void) setNomeDisciplina:(NSString *) novaDisciplina;
 
 @end
+

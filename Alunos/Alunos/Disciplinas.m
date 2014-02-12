@@ -10,24 +10,24 @@
 
 @implementation Disciplinas
 
--(int)getNota
-{
-    return nota;
-}
-
--(void) setNota:(int)novaNota
-{
-    nota = novaNota;
-}
-
--(NSString *) getNomeDisciplina
-{
-    return nomeDisciplina;
-}
-
--(void) setNomeDisciplina:(NSString *) novaDisciplina
-{
-    nomeDisciplina = novaDisciplina;
-}
-
+//-(int)getNota
+//{
+//    return nota;
+//}
+//
+//-(void) setNota:(int)novaNota
+//{
+//    nota = novaNota;
+//}
+//
+//-(NSString *) getNomeDisciplina
+//{
+//    return nomeDisciplina;
+//}
+//
+//-(void) setNomeDisciplina:(NSString *) novaDisciplina
+//{
+//    nomeDisciplina = novaDisciplina;
+//}
+//
 @end
