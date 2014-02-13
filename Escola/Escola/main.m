@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Utilizador.h"
+#import "Disciplina.h"
 
 int main(int argc, const char * argv[])
 {
@@ -23,8 +24,16 @@ int main(int argc, const char * argv[])
         char siglaCurso[5];
         Utilizador * utilizadorLogedIn;
         int opcaoMenuEscolhida;
-        int numeroUtilizadores;
-        NSString * chave;
+        
+//      Variáveis para as disciplinas
+        char nomeDisciplina[20];
+        char siglaDisciplina[5];
+        int quantidadeModulos;
+        Disciplina * disciplina;
+        NSMutableDictionary * myDisciplinas = [[NSMutableDictionary alloc]init];
+        
+        Utilizador * obj = [[Utilizador alloc]init];
+        NSArray * chaves;
         
         
 //      Criar o admin
@@ -70,7 +79,7 @@ int main(int argc, const char * argv[])
             //      Ciclo infinito até o utilizador fazer log off
             do
             {
-                //      Menu de opções
+                //      Bloco dos menus por utilizador
                 switch (utilizadorLogedIn.tipoUtilizador)
                 {
                     //      Menu do Professor
@@ -100,7 +109,7 @@ int main(int argc, const char * argv[])
                         do
                         {
                             NSLog(@"Bem vindo Administrador");
-                            NSLog(@"Escolha opcao \n 1 - Criar professor\n 2 - Criar aluno\n 3 - Criar disciplina\n 4 - Listar professores\n 0 - Log Off\n 9 - Sair do programa");
+                            NSLog(@"Escolha opcao \n 1 - Criar professor\n 2 - Criar aluno\n 3 - Criar disciplina\n 4 - Listar utilizadores\n 0 - Log Off\n 9 - Sair do programa");
                             scanf("%d",&opcaoMenuEscolhida);
                             
                         } while (opcaoMenuEscolhida<0 || opcaoMenuEscolhida>9);
@@ -110,11 +119,40 @@ int main(int argc, const char * argv[])
                 //      Bloco de tarefas por utilizador
                 switch (utilizadorLogedIn.tipoUtilizador)
                 {
-                        //      Tarefas do admin
+                    //      Tarefas do professor
+                    case 1:
+                        switch (opcaoMenuEscolhida)
+                        {
+                            //      Lançar Pautas
+                            case 1:
+                                
+                                break;
+                                
+                            //      Lançar Notas
+                            case 2:
+                                //      Apresentar todos os alunos para permitir identificar o aluno que vai receber as notas
+                                //      Criar um NSArray com todas as chaves do NSMutableDictionary
+                                chaves = [myUtilizadores allKeys];
+                                
+
+                                //      Iterar todas as posições do novo array e listar todos os alunos
+                                for (int i=0; i<[chaves count]; i++)
+                                {
+                                    obj = [myUtilizadores objectForKey:chaves[i]];
+                                    if (obj.tipoUtilizador == 1 || obj.tipoUtilizador == 9)
+                                        continue;
+                                    NSLog(@"Nome - %@ / Numero - %d", obj.nomeUtilizador, obj.numeroUtilizador);
+                                }
+                                
+                                break;
+                        }
+                        break;
+                        
+                    //      Tarefas do admin
                     case 9:
                         switch (opcaoMenuEscolhida)
                     {
-                            //      Criar professor
+                        //      Criar professor
                         case 1:
                             //      Input dados
                             NSLog(@"Introduza o nome do professor");
@@ -138,11 +176,13 @@ int main(int argc, const char * argv[])
                             
                             //      Inserir o utilizador no Dictionary de utilizadores
                             [myUtilizadores setValue:utilizador forKey:[NSString stringWithFormat:@"%d",utilizador.numeroUtilizador]];
+                            
+                            NSLog(@"Professor criado com sucesso");
                             break;
                             
-                            //      Criar aluno
+                        //      Criar aluno
                         case 2:
-                            //      Input dados
+                            //      Input dados aluno
                             NSLog(@"Introduza o nome do aluno");
                             scanf("%s",nomeUtilizador);
                             NSLog(@"Introduza o numero do aluno");
@@ -155,7 +195,7 @@ int main(int argc, const char * argv[])
                             //      Criar uma nova posição de memoria para guardar um utilizador
                             utilizador = [[Utilizador alloc]init];
                             
-                            //      Afetar as variaveis de classe do tipo utilizador com o novo utilizador
+                            //      Afetar as variaveis de classe do tipo Utilizador com o novo utilizador
                             utilizador.nomeUtilizador = [NSString stringWithFormat:@"%s",nomeUtilizador];
                             utilizador.numeroUtilizador = numero;
                             utilizador.password = [NSString stringWithFormat:@"%s",password];
@@ -164,20 +204,63 @@ int main(int argc, const char * argv[])
                             
                             //      Inserir o utilizador no Dictionary de utilizadores
                             [myUtilizadores setValue:utilizador forKey:[NSString stringWithFormat:@"%d",utilizador.numeroUtilizador]];
+                            
+                            NSLog(@"Aluno criado com sucesso");
                             break;
                             
-                            //      Listar utilizadores
+                        //      Criar disciplinas
+                        case 3:
+                            //      Input dados da disciplina
+                            NSLog(@"Introduza o nome da disciplina");
+                            scanf("%s",nomeDisciplina);
+                            NSLog(@"Introduza a sigla da disciplina");
+                            scanf("%s",siglaDisciplina);
+                            NSLog(@"Introduza a sigla do curso");
+                            scanf("%s",siglaCurso);
+                            NSLog(@"Introduza a quantidade de módulos");
+                            scanf("%d",&quantidadeModulos);
+                            
+                            //      Criar uma nova posicao de memoria para guardar uma disciplina
+                            disciplina = [[Disciplina alloc]init];
+                            
+                            //      Afetar as variáveis de classe do tipo Disciplina com a nova disciplina
+                            disciplina.nomeDisciplina = [NSString stringWithFormat:@"%s",nomeDisciplina];
+                            disciplina.siglaDisciplina = [NSString stringWithFormat:@"%s",siglaDisciplina];
+                            disciplina.siglaCurso = [NSString stringWithFormat:@"%s",siglaCurso];
+                            disciplina.qtdModulos = quantidadeModulos;
+                            
+                            //      Inserir a disciplina no Dictionary de disciplinas
+                            [myDisciplinas setValue:disciplina forKey:disciplina.nomeDisciplina];
+                            
+                            NSLog(@"Disciplina criada com sucesso");
+                            break;
+                            
+                        //      Listar utilizadores
                         case 4:
-                            for (NSString * chave in myUtilizadores);
-                        {
-                            Utilizador * value = [myUtilizadores objectForKey:chave];
-                            NSLog(@"%@",value.nomeUtilizador);
-                            NSLog(@"hello");
-                            //utilizador = [myUtilizadores objectForKey:value];
                             
-                            //NSLog(@"%@",utilizador.nomeUtilizador);
+//                            
+//                            for (obj in [myUtilizadores allValues]);
+//                            {
+//                                //obj = [[Utilizador alloc]init];
+//                                //Utilizador * valor = [myUtilizadores objectForKey:chave];
+//                                NSString * xpto = obj.nomeUtilizador;
+//                                NSLog(@"%@",xpto);
+//                                NSLog(@"hello");
+//                                //utilizador = [myUtilizadores objectForKey:value];
+//                                
+//                                //NSLog(@"%@",utilizador.nomeUtilizador);
+//
                             
-                        }
+                            //}
+                            //      Criar um NSArray com todas as chaves do NSMutableDictionary
+                            chaves = [myUtilizadores allKeys];
+                            
+                            //      Iterar todas as posições do novo array e listar todos utilizadores
+                            for (int i=0; i<[chaves count]; i++)
+                            {
+                                obj = [myUtilizadores objectForKey:chaves[i]];
+                                NSLog(@"Nome - %@ / Numero - %d / Tipo - %d", obj.nomeUtilizador, obj.numeroUtilizador, obj.tipoUtilizador);
+                            }
                             break;
                     }
                         break;
