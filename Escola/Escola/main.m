@@ -9,15 +9,16 @@
 #import <Foundation/Foundation.h>
 #import "Utilizador.h"
 #import "Disciplina.h"
+#import "Nota.h"
 
 int main(int argc, const char * argv[])
 {
 
     @autoreleasepool
     {
-        
-        Utilizador * utilizador = [[Utilizador alloc]init];
-        NSMutableDictionary * myUtilizadores = [[NSMutableDictionary alloc]init];
+//      Variáveis para os utilizadores
+        Utilizador * utilizadorObj = [[Utilizador alloc]init];
+        NSMutableDictionary * myUtilizadoresDic = [[NSMutableDictionary alloc]init];
         char nomeUtilizador[20];
         int numeroUtilizador;
         char password[10];
@@ -29,12 +30,14 @@ int main(int argc, const char * argv[])
         char nomeDisciplina[20];
         char siglaDisciplina[5];
         int quantidadeModulos;
-        Disciplina * disciplina;
-        NSMutableDictionary * myDisciplinas = [[NSMutableDictionary alloc]init];
+        Disciplina * disciplinaObj;
+        NSMutableDictionary * myDisciplinasDic = [[NSMutableDictionary alloc]init];
         
 //      Variáveis para as notas
-        
-        
+        int numeroModulo;
+        int nota;
+        NSMutableArray * myNotasArr = [[NSMutableArray alloc]init];
+        Nota * notaObj;
         
         Utilizador * obj = [[Utilizador alloc]init];
         
@@ -42,14 +45,14 @@ int main(int argc, const char * argv[])
         
         
 //      Criar o admin
-        utilizador.numeroUtilizador = 9999;
-        utilizador.nomeUtilizador = @"admin";
-        utilizador.password = @"sa";
-        utilizador.siglaCurso = @"admin";
-        utilizador.tipoUtilizador = 9;
+        utilizadorObj.numeroUtilizador = 99;
+        utilizadorObj.nomeUtilizador = @"admin";
+        utilizadorObj.password = @"sa";
+        utilizadorObj.siglaCurso = @"admin";
+        utilizadorObj.tipoUtilizador = 9;
         
 //      Inserir o admin no Dictionary de utilizadores
-        [myUtilizadores setValue:utilizador forKey:[NSString stringWithFormat:@"%d",utilizador.numeroUtilizador]];
+        [myUtilizadoresDic setValue:utilizadorObj forKey:[NSString stringWithFormat:@"%d",utilizadorObj.numeroUtilizador]];
         
         
 //      Ciclo infinito até o administrador sair do programa
@@ -65,7 +68,7 @@ int main(int argc, const char * argv[])
                 scanf("%s",password);
                 
                 //      Procurar o utilizador no Dictionary
-                utilizadorLogedIn = [myUtilizadores objectForKey:[NSString stringWithFormat:@"%d",numeroUtilizador]];
+                utilizadorLogedIn = [myUtilizadoresDic objectForKey:[NSString stringWithFormat:@"%d",numeroUtilizador]];
                 
                 if (!utilizadorLogedIn)
                     NSLog(@"Utilizador nao existe");
@@ -136,20 +139,68 @@ int main(int argc, const char * argv[])
                             //      Lançar Notas
                             case 2:
                                 //      Apresentar todos os alunos para permitir identificar o aluno que vai receber as notas
-                                for (NSString * chave in myUtilizadores)
+                                for (NSString * chave in myUtilizadoresDic)
                                 {
-                                    obj = [myUtilizadores objectForKey:chave];
+                                    obj = [myUtilizadoresDic objectForKey:chave];
                                     if (obj.tipoUtilizador == 1 || obj.tipoUtilizador == 9)
+                                    {
+                                        obj=nil;
                                         continue;
+                                    }
                                     NSLog(@"Nome - %@ / Numero - %d", obj.nomeUtilizador, obj.numeroUtilizador);
                                 }
                                 
-                                //      Apresentar todas as diciplinas para permitir identificar a sigla da disciplina
-                                for (NSString * chaves in myDisciplinas)
+                                //      Se não existirem alunos não é possivel introduzir notas
+                                if(!obj)
                                 {
-                                    disciplina = [myDisciplinas objectForKey:chaves];
-                                    NSLog(@"Nome disciplina - %@",disciplina.siglaDisciplina);
+                                    NSLog(@"Necessário criar alunos primeiro");
+                                    break;
                                 }
+                                
+                                //      Apresentar todas as diciplinas para permitir identificar a sigla da disciplina
+                                disciplinaObj = nil;    //  Senão existirem disciplinas esta variavel continua nill
+                                for (NSString * chaves in myDisciplinasDic)
+                                {
+                                    disciplinaObj = [myDisciplinasDic objectForKey:chaves];
+                                    NSLog(@"Nome disciplina - %@",disciplinaObj.siglaDisciplina);
+                                }
+                                
+                                //      Se não existirem disciplinas não é possivel introduzir notas
+                                if(!disciplinaObj)
+                                {
+                                    NSLog(@"Necessário criar disciplinas primeiro");
+                                    break;
+                                }
+                                
+                                //      Input dados
+                                NSLog(@"Introduza o numero do aluno");
+                                scanf("%d",&numeroUtilizador);
+                                NSLog(@"Introduza a sigla da disciplina");
+                                scanf("%s",siglaDisciplina);
+                                NSLog(@"Introduza o numero do modulo");
+                                scanf("%d",&numeroModulo);
+                                
+                                //      Obrigar a nota a ser entre 0 e 20
+                                do
+                                {
+                                    NSLog(@"Introduza a nota");
+                                    scanf("%d",&nota);
+                                    
+                                    if (nota<0 || nota>20)
+                                        NSLog(@"A nota tem de ser valor entre 0 e 20");
+                                } while (nota<0 || nota>20);
+                                
+                                //      Criar um novo objecto do tipo Nota
+                                notaObj = [[Nota alloc]init];
+                                
+                                //      Afetar as variáveis da classe Nota com os inputs
+                                notaObj.numeroAluno = numeroUtilizador;
+                                notaObj.siglaDisciplina = [NSString stringWithFormat:@"%s",siglaDisciplina];
+                                notaObj.numeroModulo = numeroModulo;
+                                notaObj.nota = nota;
+                                
+                                //      Inserir o objecto Nota no array
+                                [myNotasArr addObject:notaObj];
                                 break;
                         }
                         break;
@@ -170,7 +221,7 @@ int main(int argc, const char * argv[])
                                 NSLog(@"Introduza o numero do professor");
                                 scanf("%d",&numeroUtilizador);
                                 
-                                obj = [myUtilizadores objectForKey:[NSString stringWithFormat:@"%d",numeroUtilizador]];
+                                obj = [myUtilizadoresDic objectForKey:[NSString stringWithFormat:@"%d",numeroUtilizador]];
                                 
                                 if(obj)
                                     NSLog(@"Esse numero já existe");
@@ -182,17 +233,17 @@ int main(int argc, const char * argv[])
                             scanf("%s",siglaCurso);
                             
                             //      Criar uma nova posição de memoria para guardar um utilizador
-                            utilizador = [[Utilizador alloc]init];
+                            utilizadorObj = [[Utilizador alloc]init];
                             
                             //      Afetar as variaveis de classe do tipo utilizador com o novo utilizador
-                            utilizador.nomeUtilizador = [NSString stringWithFormat:@"%s",nomeUtilizador];
-                            utilizador.numeroUtilizador = numeroUtilizador;
-                            utilizador.password = [NSString stringWithFormat:@"%s",password];
-                            utilizador.siglaCurso = [NSString stringWithFormat:@"%s",siglaCurso];
-                            utilizador.tipoUtilizador = 1;
+                            utilizadorObj.nomeUtilizador = [NSString stringWithFormat:@"%s",nomeUtilizador];
+                            utilizadorObj.numeroUtilizador = numeroUtilizador;
+                            utilizadorObj.password = [NSString stringWithFormat:@"%s",password];
+                            utilizadorObj.siglaCurso = [NSString stringWithFormat:@"%s",siglaCurso];
+                            utilizadorObj.tipoUtilizador = 1;
                             
                             //      Inserir o utilizador no Dictionary de utilizadores
-                            [myUtilizadores setValue:utilizador forKey:[NSString stringWithFormat:@"%d",utilizador.numeroUtilizador]];
+                            [myUtilizadoresDic setValue:utilizadorObj forKey:[NSString stringWithFormat:@"%d",utilizadorObj.numeroUtilizador]];
                             
                             NSLog(@"Professor criado com sucesso");
                             break;
@@ -209,7 +260,7 @@ int main(int argc, const char * argv[])
                                 NSLog(@"Introduza o numero do aluno");
                                 scanf("%d",&numeroUtilizador);
                                 
-                                obj = [myUtilizadores objectForKey:[NSString stringWithFormat:@"%d",numeroUtilizador]];
+                                obj = [myUtilizadoresDic objectForKey:[NSString stringWithFormat:@"%d",numeroUtilizador]];
                                 
                                 if(obj)
                                     NSLog(@"Esse numero já existe");
@@ -221,17 +272,17 @@ int main(int argc, const char * argv[])
                             scanf("%s",siglaCurso);
                             
                             //      Criar uma nova posição de memoria para guardar um utilizador
-                            utilizador = [[Utilizador alloc]init];
+                            utilizadorObj = [[Utilizador alloc]init];
                             
                             //      Afetar as variaveis de classe do tipo Utilizador com o novo utilizador
-                            utilizador.nomeUtilizador = [NSString stringWithFormat:@"%s",nomeUtilizador];
-                            utilizador.numeroUtilizador = numeroUtilizador;
-                            utilizador.password = [NSString stringWithFormat:@"%s",password];
-                            utilizador.siglaCurso = [NSString stringWithFormat:@"%s",siglaCurso];
-                            utilizador.tipoUtilizador = 2;
+                            utilizadorObj.nomeUtilizador = [NSString stringWithFormat:@"%s",nomeUtilizador];
+                            utilizadorObj.numeroUtilizador = numeroUtilizador;
+                            utilizadorObj.password = [NSString stringWithFormat:@"%s",password];
+                            utilizadorObj.siglaCurso = [NSString stringWithFormat:@"%s",siglaCurso];
+                            utilizadorObj.tipoUtilizador = 2;
                             
                             //      Inserir o utilizador no Dictionary de utilizadores
-                            [myUtilizadores setValue:utilizador forKey:[NSString stringWithFormat:@"%d",utilizador.numeroUtilizador]];
+                            [myUtilizadoresDic setValue:utilizadorObj forKey:[NSString stringWithFormat:@"%d",utilizadorObj.numeroUtilizador]];
                             
                             NSLog(@"Aluno criado com sucesso");
                             break;
@@ -249,25 +300,25 @@ int main(int argc, const char * argv[])
                             scanf("%d",&quantidadeModulos);
                             
                             //      Criar uma nova posicao de memoria para guardar uma disciplina
-                            disciplina = [[Disciplina alloc]init];
+                            disciplinaObj = [[Disciplina alloc]init];
                             
                             //      Afetar as variáveis de classe do tipo Disciplina com a nova disciplina
-                            disciplina.nomeDisciplina = [NSString stringWithFormat:@"%s",nomeDisciplina];
-                            disciplina.siglaDisciplina = [NSString stringWithFormat:@"%s",siglaDisciplina];
-                            disciplina.siglaCurso = [NSString stringWithFormat:@"%s",siglaCurso];
-                            disciplina.qtdModulos = quantidadeModulos;
+                            disciplinaObj.nomeDisciplina = [NSString stringWithFormat:@"%s",nomeDisciplina];
+                            disciplinaObj.siglaDisciplina = [NSString stringWithFormat:@"%s",siglaDisciplina];
+                            disciplinaObj.siglaCurso = [NSString stringWithFormat:@"%s",siglaCurso];
+                            disciplinaObj.qtdModulos = quantidadeModulos;
                             
                             //      Inserir a disciplina no Dictionary de disciplinas
-                            [myDisciplinas setValue:disciplina forKey:disciplina.nomeDisciplina];
+                            [myDisciplinasDic setValue:disciplinaObj forKey:disciplinaObj.nomeDisciplina];
                             
                             NSLog(@"Disciplina criada com sucesso");
                             break;
                             
                         //      Listar utilizadores
                         case 4:
-                            for (NSString * chave in myUtilizadores)
+                            for (NSString * chave in myUtilizadoresDic)
                             {
-                                obj = [myUtilizadores objectForKey:chave];
+                                obj = [myUtilizadoresDic objectForKey:chave];
                                 NSLog(@"Nome - %@ / Numero - %d / Tipo - %d", obj.nomeUtilizador, obj.numeroUtilizador, obj.tipoUtilizador);
                             }
                             break;
