@@ -19,7 +19,7 @@ int main(int argc, const char * argv[])
         Utilizador * utilizador = [[Utilizador alloc]init];
         NSMutableDictionary * myUtilizadores = [[NSMutableDictionary alloc]init];
         char nomeUtilizador[20];
-        int numero;
+        int numeroUtilizador;
         char password[10];
         char siglaCurso[5];
         Utilizador * utilizadorLogedIn;
@@ -32,8 +32,13 @@ int main(int argc, const char * argv[])
         Disciplina * disciplina;
         NSMutableDictionary * myDisciplinas = [[NSMutableDictionary alloc]init];
         
+//      Variáveis para as notas
+        
+        
+        
         Utilizador * obj = [[Utilizador alloc]init];
-        NSArray * chaves;
+        
+  
         
         
 //      Criar o admin
@@ -55,12 +60,12 @@ int main(int argc, const char * argv[])
             {
                 //      Fazer o login
                 NSLog(@"Introduza o numero");
-                scanf("%d",&numero);
+                scanf("%d",&numeroUtilizador);
                 NSLog(@"Introduza a password");
                 scanf("%s",password);
                 
                 //      Procurar o utilizador no Dictionary
-                utilizadorLogedIn = [myUtilizadores objectForKey:[NSString stringWithFormat:@"%d",numero]];
+                utilizadorLogedIn = [myUtilizadores objectForKey:[NSString stringWithFormat:@"%d",numeroUtilizador]];
                 
                 if (!utilizadorLogedIn)
                     NSLog(@"Utilizador nao existe");
@@ -131,19 +136,20 @@ int main(int argc, const char * argv[])
                             //      Lançar Notas
                             case 2:
                                 //      Apresentar todos os alunos para permitir identificar o aluno que vai receber as notas
-                                //      Criar um NSArray com todas as chaves do NSMutableDictionary
-                                chaves = [myUtilizadores allKeys];
-                                
-
-                                //      Iterar todas as posições do novo array e listar todos os alunos
-                                for (int i=0; i<[chaves count]; i++)
+                                for (NSString * chave in myUtilizadores)
                                 {
-                                    obj = [myUtilizadores objectForKey:chaves[i]];
+                                    obj = [myUtilizadores objectForKey:chave];
                                     if (obj.tipoUtilizador == 1 || obj.tipoUtilizador == 9)
                                         continue;
                                     NSLog(@"Nome - %@ / Numero - %d", obj.nomeUtilizador, obj.numeroUtilizador);
                                 }
                                 
+                                //      Apresentar todas as diciplinas para permitir identificar a sigla da disciplina
+                                for (NSString * chaves in myDisciplinas)
+                                {
+                                    disciplina = [myDisciplinas objectForKey:chaves];
+                                    NSLog(@"Nome disciplina - %@",disciplina.siglaDisciplina);
+                                }
                                 break;
                         }
                         break;
@@ -157,8 +163,19 @@ int main(int argc, const char * argv[])
                             //      Input dados
                             NSLog(@"Introduza o nome do professor");
                             scanf("%s",nomeUtilizador);
-                            NSLog(@"Introduza o numero do professor");
-                            scanf("%d",&numero);
+                           
+                            //      Verifica se o numero introduzido já existe
+                            do
+                            {
+                                NSLog(@"Introduza o numero do professor");
+                                scanf("%d",&numeroUtilizador);
+                                
+                                obj = [myUtilizadores objectForKey:[NSString stringWithFormat:@"%d",numeroUtilizador]];
+                                
+                                if(obj)
+                                    NSLog(@"Esse numero já existe");
+                            }
+                            while (obj);
                             NSLog(@"Introduza a password");
                             scanf("%s",password);
                             NSLog(@"Introduza a sigla do curso");
@@ -169,7 +186,7 @@ int main(int argc, const char * argv[])
                             
                             //      Afetar as variaveis de classe do tipo utilizador com o novo utilizador
                             utilizador.nomeUtilizador = [NSString stringWithFormat:@"%s",nomeUtilizador];
-                            utilizador.numeroUtilizador = numero;
+                            utilizador.numeroUtilizador = numeroUtilizador;
                             utilizador.password = [NSString stringWithFormat:@"%s",password];
                             utilizador.siglaCurso = [NSString stringWithFormat:@"%s",siglaCurso];
                             utilizador.tipoUtilizador = 1;
@@ -185,8 +202,19 @@ int main(int argc, const char * argv[])
                             //      Input dados aluno
                             NSLog(@"Introduza o nome do aluno");
                             scanf("%s",nomeUtilizador);
-                            NSLog(@"Introduza o numero do aluno");
-                            scanf("%d",&numero);
+                            
+                            //      Verifica se o numero introduzido já existe
+                            do
+                            {
+                                NSLog(@"Introduza o numero do aluno");
+                                scanf("%d",&numeroUtilizador);
+                                
+                                obj = [myUtilizadores objectForKey:[NSString stringWithFormat:@"%d",numeroUtilizador]];
+                                
+                                if(obj)
+                                    NSLog(@"Esse numero já existe");
+                            }
+                            while (obj);
                             NSLog(@"Introduza a password");
                             scanf("%s",password);
                             NSLog(@"Introduza a sigla do curso");
@@ -197,7 +225,7 @@ int main(int argc, const char * argv[])
                             
                             //      Afetar as variaveis de classe do tipo Utilizador com o novo utilizador
                             utilizador.nomeUtilizador = [NSString stringWithFormat:@"%s",nomeUtilizador];
-                            utilizador.numeroUtilizador = numero;
+                            utilizador.numeroUtilizador = numeroUtilizador;
                             utilizador.password = [NSString stringWithFormat:@"%s",password];
                             utilizador.siglaCurso = [NSString stringWithFormat:@"%s",siglaCurso];
                             utilizador.tipoUtilizador = 2;
@@ -237,28 +265,9 @@ int main(int argc, const char * argv[])
                             
                         //      Listar utilizadores
                         case 4:
-                            
-//                            
-//                            for (obj in [myUtilizadores allValues]);
-//                            {
-//                                //obj = [[Utilizador alloc]init];
-//                                //Utilizador * valor = [myUtilizadores objectForKey:chave];
-//                                NSString * xpto = obj.nomeUtilizador;
-//                                NSLog(@"%@",xpto);
-//                                NSLog(@"hello");
-//                                //utilizador = [myUtilizadores objectForKey:value];
-//                                
-//                                //NSLog(@"%@",utilizador.nomeUtilizador);
-//
-                            
-                            //}
-                            //      Criar um NSArray com todas as chaves do NSMutableDictionary
-                            chaves = [myUtilizadores allKeys];
-                            
-                            //      Iterar todas as posições do novo array e listar todos utilizadores
-                            for (int i=0; i<[chaves count]; i++)
+                            for (NSString * chave in myUtilizadores)
                             {
-                                obj = [myUtilizadores objectForKey:chaves[i]];
+                                obj = [myUtilizadores objectForKey:chave];
                                 NSLog(@"Nome - %@ / Numero - %d / Tipo - %d", obj.nomeUtilizador, obj.numeroUtilizador, obj.tipoUtilizador);
                             }
                             break;
