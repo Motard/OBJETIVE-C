@@ -10,6 +10,7 @@
 #import "Utilizador.h"
 #import "Disciplina.h"
 #import "Nota.h"
+#import "Curso.h"
 
 int main(int argc, const char * argv[])
 {
@@ -38,6 +39,11 @@ int main(int argc, const char * argv[])
         int nota;
         NSMutableArray * myNotasArr = [[NSMutableArray alloc]init];
         Nota * notaObj;
+        
+//      Variáveis para o curso
+        char nomeCurso[15];
+        Curso * cursoObj;
+        NSMutableArray * myCursosArr = [[NSMutableArray alloc]init];
         
         Utilizador * obj = [[Utilizador alloc]init];
         
@@ -117,7 +123,7 @@ int main(int argc, const char * argv[])
                         do
                         {
                             NSLog(@"Bem vindo Administrador");
-                            NSLog(@"Escolha opcao \n 1 - Criar professor\n 2 - Criar aluno\n 3 - Criar disciplina\n 4 - Listar utilizadores\n 0 - Log Off\n 9 - Sair do programa");
+                            NSLog(@"Escolha opcao \n 1 - Criar professor\n 2 - Criar aluno\n 3 - Criar disciplina\n 4 - Criar curso\n 5 - Listar utilizadores\n 0 - Log Off\n 9 - Sair do programa");
                             scanf("%d",&opcaoMenuEscolhida);
                             
                         } while (opcaoMenuEscolhida<0 || opcaoMenuEscolhida>9);
@@ -133,8 +139,56 @@ int main(int argc, const char * argv[])
                         {
                             //      Lançar Pautas
                             case 1:
+                            {
+                                //      Apresentar lista de disciplinas que pertencem ao curso do professor
+                                for (NSString *chave in myDisciplinasDic)
+                                {
+                                    disciplinaObj = [myDisciplinasDic objectForKey:chave];
+                                    if([utilizadorLogedIn.siglaCurso isNotEqualTo:disciplinaObj.siglaCurso])
+                                        continue;
+                                    NSLog(@"Disciplina - %@ / sigla - %@",disciplinaObj.nomeDisciplina,disciplinaObj.siglaDisciplina);
+                                }
                                 
+                                //      Input da disciplina escolhida
+                                NSLog(@"Introduza a sigla da disciplina escolhida");
+                                scanf("%s",siglaDisciplina);
+                                
+                                //      Apresentar alunos que pertencem a este curso
+                                for (NSString *chave in myUtilizadoresDic)
+                                {
+                                    utilizadorObj = [myUtilizadoresDic objectForKey:chave];
+                                    
+                                    //      Se o utilizadorObj for do tipo professor continua
+                                    if (utilizadorObj.tipoUtilizador == 1)
+                                        continue;
+                                    
+                                    //      Se o utilizadorObj tiver uma sigla de curso diferente da sigla de curso do professor continua
+                                    if([utilizadorObj.siglaCurso isNotEqualTo:utilizadorLogedIn.siglaCurso])
+                                        continue;
+                                    
+                                    NSLog(@"Nome - %@",utilizadorObj.nomeUtilizador);
+                                    
+                                    //      Input de dados restantes (modulo e nota)
+                                    NSLog(@"Introduza o modulo");
+                                    scanf("%d",&numeroModulo);
+                                    NSLog(@"Introduza a nota");
+                                    scanf("%d",&nota);
+                                    
+                                    //      Criar um novo objecto do tipo Nota
+                                    notaObj = [[Nota alloc]init];
+                                    
+                                    //      Afetar as variáveis da classe Nota com os inputs
+                                    notaObj.numeroAluno = utilizadorObj.numeroUtilizador;
+                                    notaObj.siglaDisciplina = [NSString stringWithFormat:@"%s",siglaDisciplina];
+                                    notaObj.numeroModulo = numeroModulo;
+                                    notaObj.nota = nota;
+                                    
+                                    //      Inserir o objecto Nota no array
+                                    [myNotasArr addObject:notaObj];
+
+                                }
                                 break;
+                            }
                                 
                             //      Lançar Notas
                             case 2:
@@ -389,9 +443,31 @@ int main(int argc, const char * argv[])
                                 
                                 NSLog(@"Disciplina criada com sucesso");
                                 break;
-                                
-                            //      Listar utilizadores
+                            
+                            //      Criar curso
                             case 4:
+                            {
+                                //      Input dados do curso;
+                                NSLog(@"Introduza o nome do curso");
+                                scanf("%s",nomeCurso);
+                                NSLog(@"Introduza a sigla do curso");
+                                scanf("%s",siglaCurso);
+                                
+                                //      Criar uma nova posição de memoria para guardar um curso
+                                cursoObj = [[Curso alloc]init];
+                                
+                                //      Afetar as variáveis de classe do tipo Curso com o novo curso
+                                cursoObj.nomeCurso = [NSString stringWithFormat:@"%s",nomeCurso];
+                                cursoObj.siglaCurso = [NSString stringWithFormat:@"%s",siglaCurso];
+                                
+                                //      Inserir o novo curso no Array de cursos
+                                [myCursosArr addObject:cursoObj];
+                                
+                                NSLog(@"Curso criado com sucesso");
+                                break;
+                            }
+                            //      Listar utilizadores
+                            case 5:
                                 for (NSString * chave in myUtilizadoresDic)
                                 {
                                     obj = [myUtilizadoresDic objectForKey:chave];
