@@ -14,5 +14,6 @@
 @property (nonatomic) NSString * siglaDisciplina;
 @property (nonatomic) int numeroModulo;
 @property (nonatomic) int nota;
+@property (nonatomic) BOOL novaNota;
 
 @end

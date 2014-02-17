@@ -112,10 +112,10 @@ int main(int argc, const char * argv[])
                         do
                         {
                             NSLog(@"Bem vindo Aluno");
-                            NSLog(@"Escolha opcao \n 1 - Ver notas\n 2 - Ver média\n 3 - Disciplinas em atraso\n 0 - Log Off");
+                            NSLog(@"Escolha opcao \n 1 - Ver notas\n 2 - Ver média\n 3 - Disciplinas em atraso\n 4 - Notas novas\n 0 - Log Off");
                             scanf("%d",&opcaoMenuEscolhida);
                             
-                        } while (opcaoMenuEscolhida<0 || opcaoMenuEscolhida>3);
+                        } while (opcaoMenuEscolhida<0 || opcaoMenuEscolhida>4);
                         break;
                         
                     //      Menu do Admin
@@ -123,7 +123,7 @@ int main(int argc, const char * argv[])
                         do
                         {
                             NSLog(@"Bem vindo Administrador");
-                            NSLog(@"Escolha opcao \n 1 - Criar professor\n 2 - Criar aluno\n 3 - Criar disciplina\n 4 - Criar curso\n 5 - Listar utilizadores\n 0 - Log Off\n 9 - Sair do programa");
+                            NSLog(@"Escolha opcao \n 1 - Criar professor\n 2 - Criar aluno\n 3 - Criar disciplina\n 4 - Criar curso\n 5 - Listar utilizadores\n 6 - Eliminar professor \n 0 - Log Off\n 9 - Sair do programa");
                             scanf("%d",&opcaoMenuEscolhida);
                             
                         } while (opcaoMenuEscolhida<0 || opcaoMenuEscolhida>9);
@@ -182,6 +182,7 @@ int main(int argc, const char * argv[])
                                     notaObj.siglaDisciplina = [NSString stringWithFormat:@"%s",siglaDisciplina];
                                     notaObj.numeroModulo = numeroModulo;
                                     notaObj.nota = nota;
+                                    notaObj.novaNota = YES;
                                     
                                     //      Inserir o objecto Nota no array
                                     [myNotasArr addObject:notaObj];
@@ -201,6 +202,12 @@ int main(int argc, const char * argv[])
                                         obj=nil;
                                         continue;
                                     }
+                                    
+                                    //      Excluir alunos que não são do curso do professor
+                                    if([obj.siglaCurso isNotEqualTo:utilizadorLogedIn.siglaCurso])
+                                        continue;
+
+                                    
                                     NSLog(@"Nome - %@ / Numero - %d", obj.nomeUtilizador, obj.numeroUtilizador);
                                 }
                                 
@@ -216,6 +223,11 @@ int main(int argc, const char * argv[])
                                 for (NSString * chaves in myDisciplinasDic)
                                 {
                                     disciplinaObj = [myDisciplinasDic objectForKey:chaves];
+                                    
+                                    //      Excluir disciplinas que nao sao do curso do professor logged in
+                                    if([utilizadorLogedIn.siglaCurso isNotEqualTo:disciplinaObj.siglaCurso])
+                                        continue;
+                                    
                                     NSLog(@"Nome disciplina - %@",disciplinaObj.siglaDisciplina);
                                 }
                                 
@@ -252,6 +264,7 @@ int main(int argc, const char * argv[])
                                 notaObj.siglaDisciplina = [NSString stringWithFormat:@"%s",siglaDisciplina];
                                 notaObj.numeroModulo = numeroModulo;
                                 notaObj.nota = nota;
+                                notaObj.novaNota = YES;
                                 
                                 //      Inserir o objecto Nota no array
                                 [myNotasArr addObject:notaObj];
@@ -275,6 +288,7 @@ int main(int argc, const char * argv[])
                                     if (obj.numeroAluno != utilizadorLogedIn.numeroUtilizador)
                                         continue;
                                     NSLog(@"Disciplina - %@ / Nota - %d",obj.siglaDisciplina,obj.nota);
+                                    obj.novaNota = NO;
                                     existeDisciplinas = 1;
                                 }
                                 if(!existeDisciplinas)
@@ -324,6 +338,7 @@ int main(int argc, const char * argv[])
                                     {
                                         disciplinasEmAtraso = 1;
                                         NSLog(@"Disciplina em atraso - %@ / nota - %d", obj.siglaDisciplina,obj.nota);
+                                        obj.novaNota = NO;
                                     }
                                 }
                                 
@@ -331,6 +346,31 @@ int main(int argc, const char * argv[])
                                 if (!disciplinasEmAtraso)
                                     NSLog(@"Este aluno nao tem disciplinas em atraso");
                                 break;
+                            }
+                            
+                            //      Notas novas
+                            case 4:
+                            {
+                                //      Aceder ao myNotasArray e procurar as novas notas por numero de aluno
+                                NSUInteger posicoes = [myNotasArr count];
+                                bool notasNovas = 0;
+                                for (NSUInteger i=0; i<posicoes; i++)
+                                {
+                                    Nota * obj = myNotasArr[i];
+                                    if (obj.numeroAluno != utilizadorLogedIn.numeroUtilizador)
+                                        continue;
+                                    if(obj.novaNota==NO)
+                                        continue;
+                                    
+                                    NSLog(@"Disciplina - %@ / Nota - %d",obj.siglaDisciplina,obj.nota);
+                                    obj.novaNota = NO;
+                                    notasNovas = 1;
+                                }
+                                //      Se nao existirem notas novas
+                                if (!notasNovas)
+                                    NSLog(@"Este aluno nao tem notas novas");
+                                break;
+
                             }
                         }
                         break;
