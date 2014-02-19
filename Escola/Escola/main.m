@@ -522,8 +522,28 @@ int main(int argc, const char * argv[])
                 }
             }
             while (opcaoMenuEscolhida!=0 && opcaoMenuEscolhida!=9);
+            
             if (utilizadorLogedIn.tipoUtilizador==9 && opcaoMenuEscolhida==9)
+            {
+                NSArray * path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                NSString * documentsDir = [path objectAtIndex:0];
+                NSString * fileName = [documentsDir stringByAppendingPathComponent:@"file.txt"];
+                
+                NSMutableDictionary * ola =[[NSMutableDictionary alloc]init];
+                
+                [ola setObject:@"ola" forKey:@"ola"];
+                
+                
+                [ola writeToFile:fileName atomically:YES];
+                
+                NSData * dados = [dados d]
+                if( [myUtilizadoresDic writeToFile:fileName atomically:YES])
+                    NSLog(@"Ficheiro gravado com sucesso");
+                else
+                    NSLog(@"Ficheiro nao foi gravado");
+            
                 break;
+            }
         }
         
         return 0;
