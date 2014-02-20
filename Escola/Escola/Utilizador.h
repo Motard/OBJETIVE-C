@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Utilizador : NSObject
+@interface Utilizador : NSObject <NSCoding>
 
 @property (nonatomic) int numeroUtilizador;
 @property (nonatomic) NSString * nomeUtilizador;

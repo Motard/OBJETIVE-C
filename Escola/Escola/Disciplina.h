@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Disciplina : NSObject
+@interface Disciplina : NSObject <NSCoding>
 
 @property (nonatomic) NSString * siglaDisciplina;
 @property (nonatomic) NSString * nomeDisciplina;

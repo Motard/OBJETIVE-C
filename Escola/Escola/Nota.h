@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Nota : NSObject
+@interface Nota : NSObject <NSCoding>
 
 @property (nonatomic) int numeroAluno;
 @property (nonatomic) NSString * siglaDisciplina;

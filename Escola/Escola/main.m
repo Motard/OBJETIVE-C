@@ -26,6 +26,7 @@ int main(int argc, const char * argv[])
         char siglaCurso[5];
         Utilizador * utilizadorLogedIn;
         int opcaoMenuEscolhida;
+        Utilizador * obj = [[Utilizador alloc]init];
         
 //      Variáveis para as disciplinas
         char nomeDisciplina[20];
@@ -45,20 +46,45 @@ int main(int argc, const char * argv[])
         Curso * cursoObj;
         NSMutableArray * myCursosArr = [[NSMutableArray alloc]init];
         
-        Utilizador * obj = [[Utilizador alloc]init];
+//      Bloco para defenir o path e o nome do ficheiro - Neste caso o path é a directoria Documents
+        NSArray * path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString * documentsDir = [path objectAtIndex:0];
+        NSString * utilizadoresFile = [documentsDir stringByAppendingPathComponent:@"utilizadores.txt"];
+        NSString * disciplinasFile = [documentsDir stringByAppendingPathComponent:@"disciplinas.txt"];
+        NSString * notasFile = [documentsDir stringByAppendingPathComponent:@"notas.txt"];
+
+//      Ver se existe ficheiro de utilizadores
+        if ([[NSFileManager defaultManager] fileExistsAtPath:utilizadoresFile])
+        {
+            NSLog(@"A ler ficheiro utilizadores...");
+            myUtilizadoresDic = [NSKeyedUnarchiver unarchiveObjectWithFile:utilizadoresFile];
+        }
+        else
+        {
+            //      Criar o admin
+            utilizadorObj.numeroUtilizador = 99;
+            utilizadorObj.nomeUtilizador = @"admin";
+            utilizadorObj.password = @"sa";
+            utilizadorObj.siglaCurso = @"admin";
+            utilizadorObj.tipoUtilizador = 9;
+            
+            //      Inserir o admin no Dictionary de utilizadores
+            [myUtilizadoresDic setValue:utilizadorObj forKey:[NSString stringWithFormat:@"%d",utilizadorObj.numeroUtilizador]];
+        }
         
-        
-        
-        
-//      Criar o admin
-        utilizadorObj.numeroUtilizador = 99;
-        utilizadorObj.nomeUtilizador = @"admin";
-        utilizadorObj.password = @"sa";
-        utilizadorObj.siglaCurso = @"admin";
-        utilizadorObj.tipoUtilizador = 9;
-        
-//      Inserir o admin no Dictionary de utilizadores
-        [myUtilizadoresDic setValue:utilizadorObj forKey:[NSString stringWithFormat:@"%d",utilizadorObj.numeroUtilizador]];
+//      Ver se existe ficheiro de disciplinas
+        if ([[NSFileManager defaultManager] fileExistsAtPath:disciplinasFile])
+        {
+            NSLog(@"A ler ficheiro disciplinas...");
+            myDisciplinasDic = [NSKeyedUnarchiver unarchiveObjectWithFile:disciplinasFile];
+        }
+
+//      Ver se existe ficheiro de notas
+        if ([[NSFileManager defaultManager] fileExistsAtPath:notasFile])
+        {
+            NSLog(@"A ler ficheiro notas...");
+            myNotasArr = [NSKeyedUnarchiver unarchiveObjectWithFile:notasFile];
+        }
         
         
 //      Ciclo infinito até o administrador sair do programa
@@ -68,6 +94,7 @@ int main(int argc, const char * argv[])
             while (1)
             {
                 //      Fazer o login
+                NSLog(@"LOGIN!!!");
                 NSLog(@"Introduza o numero");
                 scanf("%d",&numeroUtilizador);
                 NSLog(@"Introduza a password");
@@ -525,23 +552,15 @@ int main(int argc, const char * argv[])
             
             if (utilizadorLogedIn.tipoUtilizador==9 && opcaoMenuEscolhida==9)
             {
-                NSArray * path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-                NSString * documentsDir = [path objectAtIndex:0];
-                NSString * fileName = [documentsDir stringByAppendingPathComponent:@"file.txt"];
+                //      Gravar no ficheiro /Documents/utilizadores.txt o Dictionary de Utilizadores
+                [NSKeyedArchiver archiveRootObject:myUtilizadoresDic toFile:utilizadoresFile];
                 
-                NSMutableDictionary * ola =[[NSMutableDictionary alloc]init];
+                //      Gravar o Dictionary de disciplinas
+                [NSKeyedArchiver archiveRootObject:myDisciplinasDic toFile:disciplinasFile];
                 
-                [ola setObject:@"ola" forKey:@"ola"];
+                //      Gravar o Array de notas
+                [NSKeyedArchiver archiveRootObject:myNotasArr toFile:notasFile];
                 
-                
-                [ola writeToFile:fileName atomically:YES];
-                
-                NSData * dados = [dados d]
-                if( [myUtilizadoresDic writeToFile:fileName atomically:YES])
-                    NSLog(@"Ficheiro gravado com sucesso");
-                else
-                    NSLog(@"Ficheiro nao foi gravado");
-            
                 break;
             }
         }
